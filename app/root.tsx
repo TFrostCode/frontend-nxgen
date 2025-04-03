@@ -6,11 +6,9 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
-
+import { CustomToaster } from "~/components/toaster";
 import "./tailwind.css";
 
-
-// Si queremos agregar cualquier hoja de estilos adicional, la podemos agregar aquí
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -24,10 +22,6 @@ export const links: LinksFunction = () => [
   },
 ];
  
-// el Layout es el componente que se renderiza en todas las rutas
-// y es el que contiene la estructura de la aplicación
-// y el que se encarga de cargar los estilos y los scripts necesarios
-// para que la aplicación funcione correctamente
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -39,6 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <CustomToaster />
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -46,7 +41,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// el Outlet es el componente que se encarga de renderizar las rutas hijas
 export default function App() {
   return <Outlet />;
 }
