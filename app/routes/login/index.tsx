@@ -49,7 +49,7 @@ export default function Login() {
           loading: "Verificando credenciales...",
           success: (data) => {
             login(data.token, data.record);
-            setTimeout(() => navigate("/profile"), 1000);
+            setTimeout(() => navigate("/dashboard"), 1500);
             return "Inicio de sesión exitoso!";
           },
           error: (err: Error) => err.message || "Credenciales incorrectas",
