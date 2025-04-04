@@ -3,8 +3,23 @@ import { Link, useLocation } from "@remix-run/react";
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: DashboardIcon },
   { name: "Configuración", href: "/settings", icon: SettingsIcon },
+  { name: "Administrador", href: "administrar", icon: Administrador },
 ];
 
+function Administrador() {
+  return (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5v-6l-10 5L2 11v6z" />
+    </svg>
+  );
+}
 function DashboardIcon() {
   return (
     <svg
@@ -22,6 +37,7 @@ function DashboardIcon() {
   );
 }
 
+
 function SettingsIcon() {
   return (
     <svg
@@ -32,7 +48,8 @@ function SettingsIcon() {
       viewBox="0 0 24 24"
     >
       <circle cx="12" cy="12" r="3"></circle>
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 
         2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 
         1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 
         1.51V21a2 2 0 0 1-2 2 2 2 0 0 
@@ -75,9 +92,11 @@ export default function Sidebar() {
                   key={item.name}
                   to={item.href}
                   className={`group flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg transition-all
-                    ${active
-                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white"}
+                    ${
+                      active
+                        ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
+                        : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                    }
                   `}
                 >
                   <div

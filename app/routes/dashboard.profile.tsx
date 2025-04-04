@@ -58,16 +58,16 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-lg">Cargando perfil...</div>
+      <div className="flex items-center justify-center">
+        <div className="text-black text-lg">Cargando perfil...</div>
       </div>
     );
   }
 
   if (!isAuthenticated || !user) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-lg">
+      <div className="flex items-center justify-center">
+        <div className="text-black text-lg">
           No autenticado. Redirigiendo a login...
         </div>
       </div>
@@ -75,15 +75,14 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 p-4 md:p-8">
       <div className="max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
         <div className="p-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center mb-4 md:mb-0">
               <img
-                src="/img/cat-login.jpg"
-                alt="Perfil"
-                className="w-20 h-20 rounded-full mr-4"
+                src={`https://pocketbase.nxgen.dev/api/files/_pb_users_auth_/${user.id}/${user.avatar}?token=${token}` || "/img/cat-login.jpg"}
+                alt={user.name}
+                className="w-12 h-12 rounded-full mr-4"
               />
               <div>
                 <h1 className="text-2xl font-bold text-white">
@@ -142,6 +141,5 @@ export default function Profile() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

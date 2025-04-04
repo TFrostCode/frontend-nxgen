@@ -1,6 +1,6 @@
 import { Form, Link, type MetaFunction, useNavigate } from "@remix-run/react";
 import { useState } from "react";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 import { useAuthStore } from "~/store/authStore";
 
 export const meta: MetaFunction = () => {
@@ -31,7 +31,6 @@ export default function Register() {
     }
 
     try {
-      // Registro
       const registerPromise = fetch(
         "https://pocketbase.nxgen.dev/api/collections/users/records",
         {
@@ -45,7 +44,7 @@ export default function Register() {
             username: formData.get("username"),
             password,
             passwordConfirm: confirmPassword,
-            emailVisibility: true,
+            emailVisibility: false,
           }),
         }
       );
@@ -59,13 +58,12 @@ export default function Register() {
           return data;
         }),
         {
-          loading: 'Registrando tu cuenta...',
-          success: '¡Registro exitoso! Iniciando sesión...',
-          error: (err: Error) => err.message || "Error en el registro"
+          loading: "Registrando tu cuenta...",
+          success: "¡Registro exitoso! Iniciando sesión...",
+          error: (err: Error) => err.message || "Error en el registro",
         }
       );
 
-      // Autenticación automática
       const authPromise = fetch(
         "https://pocketbase.nxgen.dev/api/collections/users/auth-with-password",
         {
@@ -89,16 +87,15 @@ export default function Register() {
           return data;
         }),
         {
-          loading: 'Iniciando sesión...',
+          loading: "Iniciando sesión...",
           success: (data) => {
             register(data.token, data.record);
             setTimeout(() => navigate("/profile"), 1000);
-            return '¡Bienvenido!';
+            return "¡Bienvenido!";
           },
-          error: (err: Error) => err.message || "Error al autenticar"
+          error: (err: Error) => err.message || "Error al autenticar",
         }
       );
-
     } catch (err) {
       console.error("Error inesperado:", err);
     } finally {
@@ -149,7 +146,7 @@ export default function Register() {
                   type="text"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                  placeholder="Nombre completo"
+                  placeholder="Nombre de usuario"
                 />
               </div>
 
