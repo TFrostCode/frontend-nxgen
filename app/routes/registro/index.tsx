@@ -288,8 +288,9 @@ export default function Register() {
             <div className="text-center text-sm text-gray-400">
               ¿Ya tienes una cuenta?{" "}
               <Link
-                to="/login"
+                to="/"
                 className="font-medium text-blue-400 hover:text-blue-300 transition duration-200"
+                viewTransition
               >
                 Inicia sesión
               </Link>

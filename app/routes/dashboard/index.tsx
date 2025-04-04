@@ -1,17 +1,19 @@
-// app/routes/dashboard/_index.tsx
 import { Outlet } from "@remix-run/react";
 import Navbar from "~/components/navbar";
 import Sidebar from "~/components/sidebar";
 
 export default function DashboardLayout() {
   return (
-    <div className="h-full">
+    <div className="h-screen flex flex-col bg-white">
       <Navbar />
+
       <Sidebar />
-      <div className="md:pl-64 pt-16 h-svh bg-slate-100 ">
-        <div className="px-4 py-6 sm:px-6 lg:px-8">
-          <Outlet />
-        </div>
+      <div className="flex flex-1">
+        <main className="flex-1 p-6 pl-64 pt-24">
+          <div className="container-fluid mx-auto bg-white rounded-lg p-6">
+            <Outlet />
+          </div>
+        </main>
       </div>
     </div>
   );

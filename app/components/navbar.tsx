@@ -9,7 +9,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -55,7 +55,7 @@ export default function Navbar() {
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-10">
                   <Link
-                    to="/dashboard/profile"
+                    to="/dashboard/users/profile"
                     className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 transition"
                   >
                     Tu perfil

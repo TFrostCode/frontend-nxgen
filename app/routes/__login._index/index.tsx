@@ -49,7 +49,7 @@ export default function Login() {
           loading: "Verificando credenciales...",
           success: (data) => {
             login(data.token, data.record);
-            setTimeout(() => navigate("/dashboard"), 1500);
+            setTimeout(() => navigate("/dashboard/index"), 1500);
             return "Inicio de sesión exitoso!";
           },
           error: (err: Error) => err.message || "Credenciales incorrectas",
@@ -202,6 +202,7 @@ export default function Login() {
               <Link
                 to="/registro"
                 className="font-medium text-blue-400 hover:text-blue-300 transition duration-200"
+                viewTransition
               >
                 Regístrate
               </Link>

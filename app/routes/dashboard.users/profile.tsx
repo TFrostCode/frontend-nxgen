@@ -20,7 +20,6 @@ export default function Profile() {
       return;
     }
 
-    // Verificar el token con el servidor
     const verifyToken = async () => {
       try {
         setLoading(true);
