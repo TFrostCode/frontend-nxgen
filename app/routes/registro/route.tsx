@@ -2,6 +2,7 @@ import { Form, Link, type MetaFunction, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "~/store/authStore";
+import { UserIcon, EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 
 export const meta: MetaFunction = () => {
   return [
@@ -90,7 +91,7 @@ export default function Register() {
           loading: "Iniciando sesión...",
           success: (data) => {
             register(data.token, data.record);
-            setTimeout(() => navigate("/profile"), 1000);
+            setTimeout(() => navigate("/dashboard/index"), 1000);
             return "¡Bienvenido!";
           },
           error: (err: Error) => err.message || "Error al autenticar",
@@ -125,20 +126,7 @@ export default function Register() {
             <div className="space-y-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5 text-blue-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                    />
-                  </svg>
+                  <UserIcon className="w-5 h-5 text-blue-400" />
                 </div>
                 <input
                   id="name"
@@ -152,20 +140,7 @@ export default function Register() {
 
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5 text-blue-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                    />
-                  </svg>
+                  <EnvelopeIcon className="w-5 h-5 text-blue-400" />
                 </div>
                 <input
                   id="email"
@@ -179,20 +154,7 @@ export default function Register() {
 
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5 text-blue-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                    />
-                  </svg>
+                  <LockClosedIcon className="w-5 h-5 text-blue-400" />
                 </div>
                 <input
                   id="password"
@@ -207,20 +169,7 @@ export default function Register() {
 
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5 text-blue-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                    />
-                  </svg>
+                  <LockClosedIcon className="w-5 h-5 text-blue-400" />
                 </div>
                 <input
                   id="confirm-password"
@@ -236,66 +185,20 @@ export default function Register() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full flex items-center justify-center space-x-2 ${
-                isSubmitting ? "bg-blue-700" : "bg-blue-600 hover:bg-blue-700"
-              } text-white font-medium py-3 px-4 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800`}
+              className={`w-full flex items-center justify-center py-3 text-white bg-blue-600 rounded-lg transition duration-200 ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
+              }`}
             >
-              {isSubmitting ? (
-                <>
-                  <span>Registrando...</span>
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                </>
-              ) : (
-                <>
-                  <span>Registrarse</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
-                    />
-                  </svg>
-                </>
-              )}
+              {isSubmitting ? "Registrando..." : "Registrarse"}
             </button>
-
-            <div className="text-center text-sm text-gray-400">
-              ¿Ya tienes una cuenta?{" "}
-              <Link
-                to="/"
-                className="font-medium text-blue-400 hover:text-blue-300 transition duration-200"
-                viewTransition
-              >
-                Inicia sesión
-              </Link>
-            </div>
           </Form>
+
+          <p className="text-center text-gray-400 text-sm mt-4">
+            ¿Ya tienes una cuenta?{" "}
+            <Link to="/" className="text-blue-400 hover:underline" viewTransition>
+              Iniciar sesión
+            </Link>
+          </p>
         </div>
       </div>
     </div>

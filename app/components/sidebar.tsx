@@ -15,7 +15,6 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard/index", icon: "dashboard" },
   { name: "Configuración", href: "#", icon: "configuracion" },
   { name: "Administrador", href: "/dashboard/users", icon: "administrador" },
-  
 ];
 
 export default function Sidebar() {
@@ -44,7 +43,7 @@ export default function Sidebar() {
                   `}
                 >
                   {IconComponent && (
-                    <IconComponent className="h-6 w-6 text-gray-400 group-hover:text-white transition-all" />
+                    <IconComponent className={`h-6 w-6 ${active ? "text-white" : "text-gray-400"}`} />
                   )}
                   <span>{name}</span>
                 </Link>

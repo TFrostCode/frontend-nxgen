@@ -1,4 +1,4 @@
-import { Link, Outlet } from "@remix-run/react";
+import { Outlet } from "@remix-run/react";
 import ListUsers from "./listUsers";
 
 export default function Users() {
@@ -11,14 +11,9 @@ export default function Users() {
         </div>
         <img src="/img/cat-login.jpg" alt=""  className="h-20 w-20 rounded-full"/>
       </div>
-
-
-      {/* Lista de Usuarios */}
       <div className="">
         <ListUsers />
       </div>
-
-      {/* Subrutas */}
       <div className="mt-6">
         <Outlet />
       </div>

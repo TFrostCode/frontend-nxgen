@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@remix-run/react";
 import { useAuthStore } from "~/store/authStore";
 import { useState } from "react";
+import { BellIcon } from "@heroicons/react/24/outline";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -24,20 +25,9 @@ export default function Navbar() {
             <span className="text-xl font-bold tracking-wide">Frontend</span>
           </Link>
 
-          {/* Notificaciones + usuario completamente a la derecha */}
           <div className="flex items-center gap-4">
-            {/* Botón de notificaciones */}
             <button className="text-gray-400 hover:text-white transition">
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
+              <BellIcon className="h-6 w-6" />
             </button>
 
             {/* Menú de usuario */}
@@ -55,7 +45,7 @@ export default function Navbar() {
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-10">
                   <Link
-                    to="/dashboard/users/profile"
+                    to="/dashboard/profile"
                     className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 transition"
                   >
                     Tu perfil

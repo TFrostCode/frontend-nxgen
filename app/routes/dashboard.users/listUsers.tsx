@@ -72,7 +72,7 @@ export default function Crud() {
           Lista de Usuarios
         </h2>
         <Link
-          to="#"
+          to="createUsers"
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
         >
           <UserPlusIcon className="h-5 w-5" /> Crear Usuario
