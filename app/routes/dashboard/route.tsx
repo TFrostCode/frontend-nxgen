@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet} from "@remix-run/react";
 import Navbar from "~/components/navbar";
 import Sidebar from "~/components/sidebar";
 
@@ -6,7 +6,6 @@ export default function DashboardLayout() {
   return (
     <div className="h-screen flex flex-col bg-white">
       <Navbar />
-
       <Sidebar />
       <div className="flex flex-1">
         <main className="flex-1 p-6 pl-64 pt-24">

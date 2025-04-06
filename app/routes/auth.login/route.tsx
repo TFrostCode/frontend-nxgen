@@ -65,7 +65,6 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       <div className="flex flex-row rounded-xl shadow-2xl overflow-hidden bg-gray-800">
-        {/* Sección de formulario */}
         <div className="p-8">
           <div className="text-center mb-6">
             <div className="flex items-center justify-center">

@@ -1,22 +1,16 @@
-import { Link, type MetaFunction } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "~/store/authStore";
 import { toast } from "react-hot-toast";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Perfil" },
-    { name: "description", content: "Perfil de usuario" },
-  ];
-};
-
 export default function Profile() {
   const { user, token, isAuthenticated, logout } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAuthenticated || !token) {
-      window.location.href = "/auth/login";
+      navigate("/auth/login");
       return;
     }
 
@@ -46,14 +40,14 @@ export default function Profile() {
       } catch (error) {
         toast.error("La sesión ha expirado");
         logout();
-        window.location.href = "/login";
+        window.location.href = "/auth/login";
       } finally {
         setLoading(false);
       }
     };
 
     verifyToken();
-  }, [token, isAuthenticated, logout]);
+  }, [token, isAuthenticated, logout, navigate]);
 
   if (loading) {
     return (

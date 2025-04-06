@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getUsers } from "~/funciones/data";
 import { Link } from "@remix-run/react";
-
 // Importa los íconos de Tailwind Heroicons
 import {
   MagnifyingGlassIcon,

@@ -46,6 +46,7 @@ export default function Register() {
             password,
             passwordConfirm: confirmPassword,
             emailVisibility: false,
+            rol: "user",
           }),
         }
       );
@@ -91,7 +92,7 @@ export default function Register() {
           loading: "Iniciando sesión...",
           success: (data) => {
             register(data.token, data.record);
-            setTimeout(() => navigate("/dashboard/index"), 1000);
+            setTimeout(() => navigate("/dashboard/index"), 2000);
             return "¡Bienvenido!";
           },
           error: (err: Error) => err.message || "Error al autenticar",
