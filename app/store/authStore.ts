@@ -6,6 +6,7 @@ interface User {
   collectionId: string;
   collectionName: string;
   email: string;
+  rol: string;
   emailVisibility: boolean;
   verified: boolean;
   name: string;
@@ -50,7 +51,6 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      // Opcional: puedes usar un serializer seguro para el user
       partialize: (state) => ({ 
         token: state.token,
         user: state.user 

@@ -1,9 +1,8 @@
-import Login from "~/routes/login/route";
-
+import { useEffect } from "react";
 export default function Index() {
   return (
-    <div>
-      <Login />
-    </div>
+    useEffect(() => {
+      window.location.href = "/auth/login";
+    }, [])
   );
 }

@@ -2,7 +2,6 @@ import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('https://pocketbase.nxgen.dev');
 
-// Crear un usuario
 export async function createUser(data:any) {
     try {
         const user = await pb.collection('users').create(data);
@@ -12,7 +11,6 @@ export async function createUser(data:any) {
     }
 }
 
-// Obtener todos los usuarios
 export async function getUsers() {
     try {
         const users = await pb.collection('users').getFullList();
@@ -23,7 +21,6 @@ export async function getUsers() {
     }
 }
 
-// Obtener un usuario por ID
 export async function getUserById(id:any) {
     try {
         const user = await pb.collection('users').getOne(id);
@@ -33,7 +30,6 @@ export async function getUserById(id:any) {
     }
 }
 
-// Actualizar un usuario
 export async function updateUser(id:number, data:any) {
     try {
         const updatedUser = await pb.collection('users').update(id.toString(), data);
@@ -43,7 +39,6 @@ export async function updateUser(id:number, data:any) {
     }
 }
 
-// Eliminar un usuario
 export async function deleteUser(id:number) {
     try {
         await pb.collection('users').delete(id.toString());

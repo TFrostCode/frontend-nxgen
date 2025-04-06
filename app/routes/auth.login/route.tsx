@@ -200,7 +200,7 @@ export default function Login() {
             <div className="text-center text-sm text-gray-400">
               ¿No tienes una cuenta?{" "}
               <Link
-                to="/registro"
+                to="/auth/registro"
                 className="font-medium text-blue-400 hover:text-blue-300 transition duration-200"
                 viewTransition
               >

@@ -72,7 +72,7 @@ export default function Crud() {
           Lista de Usuarios
         </h2>
         <Link
-          to="createUsers"
+          to="/dashboard/create-user"
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
         >
           <UserPlusIcon className="h-5 w-5" /> Crear Usuario
@@ -91,7 +91,6 @@ export default function Crud() {
         <MagnifyingGlassIcon className="w-5 h-5 absolute right-3 top-3 text-gray-400" />
       </div> */}
 
-      {/* Tabla de Usuarios */}
       <div className="overflow-hidden rounded-lg shadow-lg">
         <table className="w-full text-gray-800">
           <thead className="bg-gray-200 text-gray-600">
