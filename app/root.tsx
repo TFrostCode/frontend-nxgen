@@ -6,7 +6,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
-import { CustomToaster } from "~/components/toaster";
+import { CustomToaster } from "./components/toaster";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [

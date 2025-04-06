@@ -7,13 +7,14 @@ export default function Index() {
         <h1 className="text-6xl font-extrabold mb-4 animate-bounce">
           🚀 ¡Bienvenido al Sistema!
         </h1>
-        <p className="text-xl font-medium max-w-lg mb-6">
+        <p className="text-xl font-medium max-w-lg mb-2">
           Dale click a los botones de la izquierda para navegar por el sistema.
           <br />
-          <span className="text-indigo-600 font-semibold">
-            ¡Explora y disfruta de la experiencia!
-          </span>
+          <p className="text-indigo-600 font-semibold mt-4">
+            De parte de NexGen
+          </p>
         </p>
+          <img src="/img/cat-login.jpg" alt="" className="h-20 w-20 rounded-full" />
         <Link
           to="/dashboard/profile"
           className="mt-4 px-6 py-3 bg-white text-indigo-800 font-semibold rounded-lg shadow-md hover:bg-indigo-100 transition-all "

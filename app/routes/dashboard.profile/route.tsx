@@ -2,6 +2,7 @@ import { Link, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "~/store/authStore";
 import { toast } from "react-hot-toast";
+import ErrorLayout from "~/components/error";
 
 export default function Profile() {
   const { user, token, isAuthenticated, logout } = useAuthStore();
@@ -10,7 +11,6 @@ export default function Profile() {
 
   useEffect(() => {
     if (!isAuthenticated || !token) {
-      navigate("/auth/login");
       return;
     }
 
@@ -49,21 +49,23 @@ export default function Profile() {
     verifyToken();
   }, [token, isAuthenticated, logout, navigate]);
 
-  if (loading) {
+  if (loading && !isAuthenticated) {
     return (
-      <div className="flex items-center justify-center">
-        <div className="text-black text-lg">Cargando perfil...</div>
-      </div>
+      <ErrorLayout
+        title="Acceso denegado"
+        message="No estás autenticado"
+        subMessage="Por favor, inicia sesión para acceder a esta página."
+      />
     );
   }
 
   if (!isAuthenticated || !user) {
     return (
-      <div className="flex items-center justify-center">
-        <div className="text-black text-lg">
-          No autenticado. Redirigiendo a login...
-        </div>
-      </div>
+      <ErrorLayout
+        title="Perfil no verificado"
+        message="Tu perfil no ha sido verificado"
+        subMessage="Por favor, verifica tu perfil para acceder a esta página."
+      />
     );
   }
 
@@ -77,14 +79,14 @@ export default function Profile() {
                 `https://pocketbase.nxgen.dev/api/files/_pb_users_auth_/${user.id}/${user.avatar}?token=${token}` ||
                 "/img/cat-login.jpg"
               }
-              alt={user.name}
+              alt={user?.name}
               className="w-12 h-12 rounded-full mr-4"
             />
             <div>
               <h1 className="text-2xl font-bold text-white">
-                {user.name || "Usuario"}
+                {user?.name || "Usuario"}
               </h1>
-              <p className="text-blue-300">{user.email}</p>
+              <p className="text-blue-300">{user?.email}</p>
             </div>
           </div>
           <button
@@ -102,14 +104,14 @@ export default function Profile() {
             </h2>
             <div className="space-y-3">
               <p>
-                <span className="text-blue-300">Usuario:</span> {user.name}
+                <span className="text-blue-300">Usuario:</span> {user?.name}
               </p>
               <p>
-                <span className="text-blue-300">Email:</span> {user.email}
+                <span className="text-blue-300">Email:</span> {user?.email}
               </p>
               <p>
                 <span className="text-blue-300">Creado:</span>{" "}
-                {new Date(user.created).toLocaleDateString()}
+                {new Date(user?.created || "").toLocaleDateString()}
               </p>
             </div>
           </div>
