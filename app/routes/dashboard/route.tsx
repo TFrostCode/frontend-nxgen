@@ -24,7 +24,7 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="h-screen flex bg-white">
+    <div className="min-h-screen flex bg-white">
       <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
 
       <div
@@ -35,7 +35,7 @@ export default function DashboardLayout() {
         <Navbar toggleSidebar={toggleSidebar} isCollapsed={isCollapsed} />
 
         <main className="p-6 pt-24">
-          <div className="container mx-auto bg-white rounded-lg p-6">
+          <div className="container min-h-screen mx-auto bg-white rounded-lg p-6">
             <Outlet />
           </div>
         </main>

@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getUsers } from "~/funciones/data";
-import { Link } from "@remix-run/react";
+import { createUser, deleteUser, getUsers, updateUser } from "~/funciones/data"; // Necesitaremos esta función
+import { Form, Link } from "@remix-run/react";
 // Importa los íconos de Tailwind Heroicons
 import {
   MagnifyingGlassIcon,
   PencilIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
+import Modal from "~/components/modal";
+import { form } from "framer-motion/client";
+import { ChevronLeftIcon, ChevronRightIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function Crud() {
   const [users, setUsers] = useState<any[]>([]);
@@ -16,6 +19,125 @@ export default function Crud() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
+  const [modalActive, setModalActive] = useState(false);
+  const [modalDeleteActive, setModalDeleteActive] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [formData, setFormData] = useState({
+    "password": "",
+    "passwordConfirm": "",
+    "email": "",
+    "emailVisibility": true,
+    "name": "",
+    "rol": "",
+  });
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveUser = async () => {
+    // Crea una validacion para el correo completo
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("El correo electrónico no es válido");
+      return;
+    }
+    if( !isEditing && ( formData.password !== formData.passwordConfirm)) {
+      toast.error("Las contraseñas no coinciden");
+      return;
+    }
+    if(!isEditing && (formData.email === "" || formData.name === "" || formData.rol === "" || formData.password === "" || formData.passwordConfirm === "")) {
+      toast.error("Todos los campos son obligatorios");
+      return;
+    }
+    if(!isEditing && (formData.password?.length < 8)) {
+      toast.error("La contraseña debe tener al menos 8 caracteres");
+      return;
+    }
+    try {
+      if (isEditing && currentUserId) {
+
+        const updateData: Partial<typeof formData> = { ...formData };
+        if (!updateData.password || updateData.password.trim() === "") {
+          delete updateData.password;
+          delete updateData.passwordConfirm;
+        }
+
+        const updatedUser = await updateUser(currentUserId, updateData);
+        if (updatedUser) {
+          toast.success("Usuario actualizado correctamente");
+          setUsers(users.map(user => user.id === currentUserId ? { ...user, ...formData } : user));
+          handleCloseModal();
+        }
+      } else {
+        console.log(formData);
+        const user = await createUser(formData);
+        if (user) {
+          toast.success("Usuario creado correctamente");
+          setUsers([...users, user]);
+          handleCloseModal();
+        }
+      }
+    } catch (error) {
+      console.error("Error al guardar usuario:", error);
+      toast.error("Error al guardar usuario");
+    }
+  };
+
+  const handleOpenEditModal = (user: any) => {
+    setFormData({
+      name: user.name || "",
+      email: user.email || "",
+      rol: user.rol || "",
+      password: user.password,
+      passwordConfirm: user.password,
+      emailVisibility: true
+    });
+    console.log(typeof user.id)
+    setCurrentUserId(user.id);
+    setIsEditing(true);
+    setModalActive(true);
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    setModalDeleteActive(true);
+    // if (!confirmation) return;
+    try {
+      await deleteUser(userId);
+      toast.success("Usuario eliminado correctamente");
+      setUsers(users.filter(user => user.id !== userId));
+    } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      toast.error("Error al eliminar usuario");
+    }
+    setModalDeleteActive(false);
+    setCurrentUserId(null);
+  };
+
+  const handleOpenCreateModal = () => {
+    // Limpiar el formulario para crear un nuevo usuario
+    setFormData({
+      name: "",
+      email: "",
+      rol: "",
+      password: "",
+      passwordConfirm: "",
+      emailVisibility: true
+    });
+    
+    setCurrentUserId(null);
+    setIsEditing(false);
+    setModalActive(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalActive(false);
+    setIsEditing(false);
+    setCurrentUserId(null);
+  };
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -39,8 +161,8 @@ export default function Crud() {
   useEffect(() => {
     const filtered = users.filter(
       (user) =>
-        user.name.toLowerCase().includes(search.toLowerCase()) ||
-        user.email.toLowerCase().includes(search.toLowerCase())
+        user.name?.toLowerCase().includes(search.toLowerCase()) ||
+        user.email?.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredUsers(filtered);
     setCurrentPage(1); // Reiniciar la paginación al buscar
@@ -64,31 +186,97 @@ export default function Crud() {
   }
 
   return (
-    <div className="p-6 bg-white ">
+    <div className="p-6 bg-white">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-800">
           Lista de Usuarios
         </h2>
-        <Link
-          to="/dashboard/create-user"
+        <button
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
+          onClick={handleOpenCreateModal}
         >
           <UserPlusIcon className="h-5 w-5" /> Crear Usuario
-        </Link>
-      </div>
+        </button>
+        <Modal
+          size="md"
+          title={isEditing ? "Editar Usuario" : "Crear Usuario"}
+          activeModal={modalActive}
+          closeModal={handleCloseModal}
+          onSave={handleSaveUser}
+          buttonSaveName={isEditing ? "Actualizar Usuario" : "Crear Usuario"}
+        >
+          <Form method="post" ref={formRef} className="space-y-4 grid grid-cols-2 gap-4">
+            <div className="pt-4">
+              <label className="text-black">Nombre</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                required
+                placeholder="Ingrese su nombre"
+                className="w-full text-[14px] bg-white text-gray-700 font-light border p-2 rounded-md"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="">
+              <label className="text-black">Rol</label>
+              <select name="rol" id="" required value={formData.rol} onChange={handleChange} className="w-full text-[14px] bg-white text-gray-700 font-light border p-2 rounded-md">
+                <option value="">Seleccione un rol</option>
+                <option value="admin">Administrador</option>
+                <option value="user">Usuario</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-black">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                required
+                placeholder="Ingrese su email"
+                className="w-full text-[14px] bg-white text-gray-700 border p-2 rounded-md"
+                onChange={handleChange}
+              />
+            </div>
 
-      {/* Buscador */}
-      {/* <div className="relative mb-4">
-        <input
-          type="text"
-          placeholder="Buscar usuario..."
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <MagnifyingGlassIcon className="w-5 h-5 absolute right-3 top-3 text-gray-400" />
-      </div> */}
+            <div>
+              <label className="text-black">{isEditing ? "Nueva Contraseña (opcional)" : "Contraseña"}</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                required={!isEditing}
+                placeholder="Contraseña"
+                className="w-full text-[14px] bg-white text-gray-700 border p-2 rounded-md"
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="col-span-1">
+              <label className="text-black">{isEditing ? "Confirmar Nueva Contraseña" : "Confirmar Contraseña"}</label>
+              <input
+                type="password"
+                name="passwordConfirm"
+                value={formData.passwordConfirm}
+                required={!isEditing}
+                placeholder="Confirmar contraseña"
+                className="w-full text-[14px] bg-white text-gray-700 border p-2 rounded-md"
+                onChange={handleChange}
+              />
+            </div>
+          </Form>
+        </Modal>
+
+        <Modal
+          size="sizeDelete"
+          title="¿Estás seguro que deseas eliminar al usuario?"
+          activeModal={modalDeleteActive}
+          closeModal={() => setModalDeleteActive(false)}
+          onSave={() => handleDeleteUser(currentUserId ?? "")}
+          buttonSaveName="Sí, estoy seguro"
+        > </Modal>
+      </div>
 
       <div className="overflow-hidden rounded-lg shadow-lg">
         <table className="w-full text-gray-800">
@@ -97,6 +285,7 @@ export default function Crud() {
               <th className="px-6 py-3 text-left">Nombre</th>
               <th className="px-6 py-3 text-left">Email</th>
               <th className="px-6 py-3 text-left">Fecha de Creación</th>
+              <th className="px-6 py-3 text-left">Rol</th>
               <th className="px-6 py-3 text-center">Acciones</th>
             </tr>
           </thead>
@@ -120,10 +309,31 @@ export default function Crud() {
                   <td className="px-6 py-4">
                     {new Date(user?.created ?? "").toLocaleDateString()}
                   </td>
+                  <td className="px-6 py-4">{user?.rol ?? "Sin nombre"}</td>
                   <td className="px-6 py-4 text-center">
-                    <button className="flex items-center gap-2 bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all">
-                      <PencilIcon className="h-5 w-5" /> Editar
-                    </button>
+                    <div className="flex justify-center gap-2">
+                      <button
+                        className="flex items-center justify-center bg-yellow-500 text-white px-3 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all"
+                        onClick={() => {
+                          handleOpenEditModal(user)
+                          setCurrentUserId(user.id)
+                        }}
+                        title="Editar"
+                      >
+                        <PencilIcon className="h-5 w-5" />
+                      </button>
+                      <button
+                        className="flex items-center justify-center bg-red-500 text-white px-3 py-2 rounded-lg shadow-md hover:bg-red-600 transition-all"
+                        onClick={() => {
+                          setModalDeleteActive(true)
+                          setCurrentUserId(user.id)
+                        }}
+                        title="Eliminar"
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                      {/* Aquí puedes añadir otros botones como eliminar si lo necesitas */}
+                    </div>
                   </td>
                 </tr>
               ))
@@ -135,7 +345,7 @@ export default function Crud() {
       {totalPages > 0 && (
         <div className="flex justify-center items-center mt-6 gap-2">
           <button
-            className={`px-4 py-2 rounded-lg ${
+            className={`p-2 rounded-full ${
               currentPage === 1
                 ? "bg-gray-300"
                 : "bg-blue-500 hover:bg-blue-600 text-white"
@@ -143,13 +353,13 @@ export default function Crud() {
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
           >
-            Anterior
+            <ChevronLeftIcon className="h-6 w-6 text-white" />
           </button>
           <span className="text-gray-700 font-semibold">
             Página {currentPage} de {totalPages}
           </span>
           <button
-            className={`px-4 py-2 rounded-lg ${
+            className={`p-2 rounded-full ${
               currentPage === totalPages
                 ? "bg-gray-300"
                 : "bg-blue-500 hover:bg-blue-600 text-white"
@@ -159,7 +369,7 @@ export default function Crud() {
             }
             disabled={currentPage === totalPages}
           >
-            Siguiente
+            <ChevronRightIcon className="h-6 w-6 text-white" />
           </button>
         </div>
       )}

@@ -32,6 +32,8 @@ export async function getUserById(id:any) {
 
 export async function updateUser(id:number, data:any) {
     try {
+        console.log('ID:', id);
+        console.log('Data:', data);
         const updatedUser = await pb.collection('users').update(id.toString(), data);
         return updatedUser;
     } catch (error) {
@@ -39,7 +41,7 @@ export async function updateUser(id:number, data:any) {
     }
 }
 
-export async function deleteUser(id:number) {
+export async function deleteUser(id:string) {
     try {
         await pb.collection('users').delete(id.toString());
         console.log('Usuario eliminado');
