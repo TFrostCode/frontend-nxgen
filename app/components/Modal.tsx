@@ -1,6 +1,6 @@
 import { CSSProperties, useEffect } from "react";
 import { returnScreenSize } from "../funciones/helpers";
-import { TrashIcon, UserCircleIcon, UserIcon, UserPlusIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 
 interface IModal {
   size?: "xs" | "md" | "lg" | "xl" | "custom" | "sizeDelete";
@@ -20,7 +20,7 @@ interface IModal {
 let modalUID = 1;
 
 const Modal = (props: IModal) => {
-  const { type, size, title, activeModal, height, width, backgroundAll } = props;
+  const { size, title, activeModal, height, width, backgroundAll } = props;
   const { buttonSaveName, buttonCerrarName } = props;
   const { closeModal, onSave } = props;
   const modalOverlayId = `modal_overlay${modalUID}`;
@@ -86,7 +86,7 @@ const Modal = (props: IModal) => {
       id={modalOverlayId}
       className={`${
         backgroundAll == false ? " pl-52 " : ""
-      } absolute inset-0 h-full w-full justify-center flex items-start md:items-center pt-20 md:pt-0 z-20 backdrop-blur-sm ${"hidden"}`}
+      } fixed top-0 left-0 w-full h-full flex justify-center items-center md:pt-0 z-20 backdrop-blur-sm ${"hidden"}`}
       style={{ backgroundColor: "rgba(24, 24, 24, 0.6)" }}
     >
       

@@ -23,6 +23,16 @@ export default function DashboardLayout() {
     );
   }
 
+  if(user?.rol !== "admin" && user?.rol !== "user") {
+    return(
+      <Error 
+        title="Acceso denegado"
+        message="No tienes permiso para acceder al dashboard"
+        subMessage="Por favor, inicia sesión para acceder al dashboard."
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen flex bg-white">
       <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />

@@ -9,7 +9,7 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-export default function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
+export default function Sidebar({ isCollapsed}: SidebarProps) {
   const location = useLocation();
   const { user } = useAuthStore();
 
@@ -24,7 +24,6 @@ export default function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
           src="/img/cat-login.jpg"
           alt="Logo"
           className="h-9 w-9 rounded-full border border-gray-700 cursor-pointer"
-          onClick={toggleSidebar}
         />
         {!isCollapsed && (
           <span className="ml-3 text-xl font-bold text-white">Frontend</span>

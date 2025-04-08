@@ -12,12 +12,12 @@ export const navigation = [
     subItems: [
       {
         name: "Perfil",
-        href: "/dashboard/perfil",
+        href: "#",
         roles: ["user" , "admin"],
       },
       {
         name: "Ajustes",
-        href: "/dashboard/settings",
+        href: "#",
         roles: ["user", "admin"],
       },
     ],

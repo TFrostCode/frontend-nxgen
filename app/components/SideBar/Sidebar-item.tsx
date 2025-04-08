@@ -57,7 +57,7 @@ export default function SidebarItem({
                 ? "fixed left-16 ml-4 w-48 bg-gray-900 p-2  shadow-lg z-50"
                 : "ml-6 mt-1"
             } space-y-1 overflow-hidden transition-all duration-300 ${
-              open ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+              open ? "max-h-screen opacity-100" : "max-h-0 opacity-0 hidden"
             }`}
           >
             {subItems.map((item) => {

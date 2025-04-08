@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { createUser, deleteUser, getUsers, updateUser } from "~/funciones/data"; // Necesitaremos esta función
-import { Form, Link } from "@remix-run/react";
+import { Form} from "@remix-run/react";
 // Importa los íconos de Tailwind Heroicons
 import {
   MagnifyingGlassIcon,
